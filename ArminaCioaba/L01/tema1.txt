@@ -1,0 +1,5 @@
+Spotify is an audio and media streaming platform that I use pretty much daily.
+It offers you access to an enormous amount of content in exchange for a subscription.
+It also has various features that enhance the end user experience such as: add your own music, make super customized playlists, radio feature, listen off the record and so many more.
+What is even more interesting about Spotify is the fact that by the year 2018 it fully migrated to cloud using one well known cloud provider, Google Cloud Platform (GCP).
+As they declare, cloud services will make them "innovate faster, by building services in this environment and finding better ways to build solutions that benefit our massive user base, taking full advantage of machine learning, data processing, and other opportunities".
