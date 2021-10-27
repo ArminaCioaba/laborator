@@ -16,6 +16,7 @@ namespace L03
         static void Main(string[] args)
         {
             Initialize();
+            UploadFile();
         }
      static void Initialize()
     {
@@ -72,6 +73,20 @@ namespace L03
                 }
             }
         }
+    }
+
+    static void UploadFile()
+    {
+        var body=new Google.Apis.Drive.v3.Data.File();
+        body.Name="arm.txt";
+        body.MimeType="text/plain";
+
+        var byteArray=File.ReadAllBytes("arm.txt");
+        System.IO.MemoryStream stream=new System.IO.MemoryStream(byteArray);
+
+        var request=_service.Files.Create(body,stream, "text/plain");
+        request.Upload();
+        Console.WriteLine(request.ResponseBody);
     }
  
     }
