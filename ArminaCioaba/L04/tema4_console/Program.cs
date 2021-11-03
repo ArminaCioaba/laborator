@@ -31,9 +31,12 @@ namespace tema4_console
 
             await studentsTable.CreateIfNotExistsAsync();
 
-            await AddNewStudent();
-            //await EditStudent();
+            //await AddNewStudent();
             //await GetAllStudents();
+            await EditOneStudent("UPT","1234567891014");
+            await GetOneStudent("UPT", "1234567891014");
+            await DeleteOneStudent("UPT", "1234567891014");
+            await GetAllStudents();
 
         }
         
@@ -50,6 +53,83 @@ namespace tema4_console
             var insertOperation=TableOperation.Insert(student);
 
             await studentsTable.ExecuteAsync(insertOperation);
+        }
+
+        private static async Task GetAllStudents()
+        {
+            Console.WriteLine("University\tCNP\tFirstName\tLastName\tEmail\tPhoneNumber\tFaculty\nYear");
+            TableQuery<StudentEntity>query=new TableQuery<StudentEntity>();
+            TableContinuationToken token=null;
+
+            do{
+                TableQuerySegment<StudentEntity> resultSegment=await studentsTable.ExecuteQuerySegmentedAsync(query,token);
+                token=resultSegment.ContinuationToken;
+                foreach(StudentEntity entity in resultSegment.Results)
+                {
+                    Console.WriteLine("{0} | {1} | {2} | {3} | {4} | {5} | {6} | {7}", entity.PartitionKey, entity.RowKey, entity.FirstName, entity.LastName, entity.Email, entity.PhoneNumber, entity.Faculty, entity.Year);
+                }
+            }while(token!=null);
+        }
+
+        private static async Task GetOneStudent(string Partkey, string rwkey)
+        {
+            Console.WriteLine("University\tCNP\tFirstName\tLastName\tEmail\tPhoneNumber\tFaculty\nYear");
+             TableQuery<StudentEntity>query=new TableQuery<StudentEntity>();
+            TableContinuationToken token=null;
+
+            do{
+                TableQuerySegment<StudentEntity> resultSegment=await studentsTable.ExecuteQuerySegmentedAsync(query,token);
+                token=resultSegment.ContinuationToken;
+                foreach(StudentEntity entity in resultSegment.Results)
+                {
+                    if((entity.PartitionKey==Partkey)&(entity.RowKey==rwkey))
+                    Console.WriteLine("{0} | {1} | {2} | {3} | {4} | {5} | {6} | {7}", entity.PartitionKey, entity.RowKey, entity.FirstName, entity.LastName, entity.Email, entity.PhoneNumber, entity.Faculty, entity.Year);
+                }
+            }while(token!=null);
+        }
+        private static async Task EditOneStudent(string Partkey, string rwkey)
+        {
+             TableQuery<StudentEntity>query=new TableQuery<StudentEntity>();
+            TableContinuationToken token=null;
+
+            do{
+                TableQuerySegment<StudentEntity> resultSegment=await studentsTable.ExecuteQuerySegmentedAsync(query,token);
+                token=resultSegment.ContinuationToken;
+                foreach(StudentEntity entity in resultSegment.Results)
+                {
+                    if((entity.PartitionKey==Partkey)&(entity.RowKey==rwkey))
+                    {
+                        entity.Email="george.paulescu@student.upt.ro";
+                        entity.PhoneNumber="0712345612";
+                        entity.Year=4;
+                         var insertOperation=TableOperation.Merge(entity);
+
+                         await studentsTable.ExecuteAsync(insertOperation);
+                    }
+                   
+                }
+            }while(token!=null);
+        }
+        private static async Task DeleteOneStudent(string Partkey, string rwkey)
+        {
+             TableQuery<StudentEntity>query=new TableQuery<StudentEntity>();
+            TableContinuationToken token=null;
+
+            do{
+                TableQuerySegment<StudentEntity> resultSegment=await studentsTable.ExecuteQuerySegmentedAsync(query,token);
+                token=resultSegment.ContinuationToken;
+                foreach(StudentEntity entity in resultSegment.Results)
+                {
+                    if((entity.PartitionKey==Partkey)&(entity.RowKey==rwkey))
+                    {
+                        
+                         var insertOperation=TableOperation.Delete(entity);
+
+                         await studentsTable.ExecuteAsync(insertOperation);
+                    }
+                   
+                }
+            }while(token!=null);
         }
     }
 }
