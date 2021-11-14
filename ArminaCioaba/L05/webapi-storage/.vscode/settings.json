@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/ddedb001-4d99-4e0d-8818-97f5f790c3a8/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/rpetrusan-test-datc2020-l2",
+    "appService.deploySubpath": "publish"
+}
