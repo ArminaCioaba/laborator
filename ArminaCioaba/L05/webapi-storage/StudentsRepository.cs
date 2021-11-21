@@ -57,6 +57,7 @@ namespace webapi_storage
             _studentsTable = _tableClient.GetTableReference("studenti");
 
             await _studentsTable.CreateIfNotExistsAsync();
+            await GetAllStudents();
         }
     }
 }
